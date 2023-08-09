@@ -1,40 +1,30 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
+const app = express();
+const path = require("path");
 
-const server = http.createServer((req, res) => {
-  const url = req.url;
-  servePage(url, res);
+// Define the path to the static files directory
+app.use(express.static(path.join(__dirname, "public")));
+
+// Define routes for different pages
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./pages/index.html"));
 });
 
-function servePage(url, res) {
-  let fileName = "";
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "./pages/about.html"));
+});
 
-  switch (url) {
-    case "/":
-      fileName = "./pages/index.html";
-      break;
-    case "/about":
-      fileName = "./pages/about.html";
-      break;
-    case "/contact":
-      fileName = "./pages/contact.html";
-      break;
-    default:
-      fileName = "./pages/404.html";
-      break;
-  }
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "./pages/contact.html"));
+});
 
-  fs.readFile(fileName, "utf8", (err, content) => {
-    if (err) {
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
-    } else {
-      res.writeHead(200, { "Content-Type": "text/html" });
-      res.end(content);
-    }
-  });
-}
+// 404 page
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "./pages/404.html"));
+});
 
-server.listen(8080, () => {
-  console.log("Server is running on port 8080");
+// Start the server
+const port = 8080;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
