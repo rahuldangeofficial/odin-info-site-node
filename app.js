@@ -11,16 +11,16 @@ function servePage(url, res) {
 
   switch (url) {
     case "/":
-      fileName = "index.html";
+      fileName = "./pages/index.html";
       break;
     case "/about":
-      fileName = "about.html";
+      fileName = "./pages/about.html";
       break;
     case "/contact":
-      fileName = "contact.html";
+      fileName = "./pages/contact.html";
       break;
     default:
-      fileName = "404.html";
+      fileName = "./pages/404.html";
       break;
   }
 
